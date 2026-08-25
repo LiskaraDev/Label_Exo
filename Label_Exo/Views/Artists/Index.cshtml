@@ -16,15 +16,15 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Artists artist in Model)
+        @foreach (Artiste artist in Model)
         {
             <tr>
                 <td>@artist.Id</td>
-                <td><a asp-controller="Albums" asp-action="ByArtist" asp-route-artistId="@artist.Id">@artist.Name</a></td>
-                <td>@artist.Style</td>
-                <td>@artist.Started</td>
-                <td>@artist.Language</td>
-                <td>@artist.IsActive</td>
+                <td>@artist.NomScenique</td>
+                <td>@artist.StyleMusical</td>
+                <td>@artist.DateSignature</td>
+                <td>@artist.LabelId</td>
+                <td>@artist.Label</td>
             </tr>
         }
     </tbody>

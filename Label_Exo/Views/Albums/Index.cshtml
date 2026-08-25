@@ -14,13 +14,14 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Albums album in Model)
+        @foreach (Album album in Model)
         {
             <tr>
                 <td>@album.Id</td>
-                <td><a asp-controller="Albums" asp-action="ByArtist" asp-route-albumId="@album.Id">@album.Name</a></td>
-                <td>@album.ArtistId</td>
-                <td>@album.Year</td>
+                <td>@album.Titre</td>
+                <td>@album.DateSortie</td>
+                <td>@album.ArtisteId</td>
+                <td>@album.Artiste</td>
             </tr>
         }
     </tbody>
