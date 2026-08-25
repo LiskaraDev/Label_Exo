@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Label_Exo.Models.Membre>
+
+@{
+    ViewData["Title"] = "Liste des membres";
+}
+
+<h1>Liste des membres</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Ajouter un membre</a>
+
+    <a asp-action="Delete" class="btn btn-primary">Supprimer un membre</a>
+
+    <a asp-action="Edit" class="btn btn-primary">Modifier un membre</a>
+</p>
+
+@if(!Model.Any()){
+    <p>Aucun membre n'est enregistré.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Instrument</th>
+                <th>Date de naissance</th>
+                <th>Groupe Id</th>
+                <th>Groupe</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        @foreach (var membre in Model)
+        {
+            <tr>
+                <td>@membre.Id</td>
+                <td>@membre.Nom</td>
+                <td>@membre.Prenom</td>
+                <td>@membre.Instrument</td>
+                <td>@membre.DateNaissance</td>
+                <td>@membre.ArtisteId</td>
+                <td>@membre.Artiste</td>
+            </tr>    
+        }
+        </tbody>
+    </table>
+}
+
+

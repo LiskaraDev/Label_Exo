@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Label_Exo.Models.Piste>
+
+@{
+    ViewData["Title"] = "Pistes";
+}
+
+<h1>Liste des pistes musicales</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Ajouter une piste</a>
+    <a asp-action="Edit" class="btn btn-primary">Modifier une piste</a>
+    <a asp-action="Delete" class="btn btn-primary">Supprimer une piste</a>
+</p>
+
+@if (!Model.Any())
+{
+    <p>Aucune piste enregistrée.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Durée en secondes</th>
+                <th>Id album</th>
+                <th>Album</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach(var piste in Model)
+            {
+                <tr>
+                    <td>@piste.Id</td>
+                    <td>@piste.Titre</td>
+                    <td>@piste.DureeSecondes</td>
+                    <td>@piste.AlbumId</td>
+                    <td>@piste.Album</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

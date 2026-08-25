@@ -1,0 +1,49 @@
+@model Label_Exo.Models.Piste
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Piste</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Titre" class="control-label"></label>
+                <input asp-for="Titre" class="form-control" />
+                <span asp-validation-for="Titre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DureeSecondes" class="control-label"></label>
+                <input asp-for="DureeSecondes" class="form-control" />
+                <span asp-validation-for="DureeSecondes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AlbumId" class="control-label"></label>
+                <input asp-for="AlbumId" class="form-control" />
+                <span asp-validation-for="AlbumId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Album" class="control-label"></label>
+                <input asp-for="Album" class="form-control" />
+                <span asp-validation-for="Album" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Retour à la liste</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

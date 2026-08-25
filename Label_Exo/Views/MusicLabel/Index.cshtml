@@ -8,27 +8,36 @@
 
 <p>
     <a asp-action="Create" class="btn btn-primary">Ajouter un label</a>
+    <a asp-action="Edit" class="btn btn-primary">Modifier un label</a>
+    <a asp-action="Delete" class="btn btn-primary">Supprimer un label</a>
 </p>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Genre principal</th>
-            <th>Année de création</th>
-            <th>Adresse</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @foreach (var label in Model)
-        {
+@if (!Model.Any())
+{
+    <p>Aucun label enregistré.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>@label.Nom</td>
-                <td>@label.GenrePrincipal</td>
-                <td>@label.AnneeCreation</td>
-                <td>@label.Adresse</td>
+                <th>Nom</th>
+                <th>Genre principal</th>
+                <th>Année de création</th>
+                <th>Adresse</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+
+        <tbody>
+            @foreach (var label in Model)
+            {
+                <tr>
+                    <td>@label.Nom</td>
+                    <td>@label.GenrePrincipal</td>
+                    <td>@label.AnneeCreation</td>
+                    <td>@label.Adresse</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

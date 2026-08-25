@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Label_Exo.Models.Artiste>
+
+@{
+    ViewData["Title"] = "Artistes";
+}
+
+<h2 class="mb-4">Liste des artistes</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Ajouter une piste</a>
+    <a asp-action="Edit" class="btn btn-primary">Modifier une piste</a>
+    <a asp-action="Delete" class="btn btn-primary">Supprimer une piste</a>
+</p>
+
+@if (!Model.Any())
+{
+    <p>Aucun artiste n'est enregistré.</p>
+}
+else
+{
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+            <tr>
+                <th>Id</th>
+                <th>Nom scénique</th>
+                <th>Style musical</th>
+                <th>Date de signature</th>
+                <th>Label</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var artiste in Model)
+            {
+                <tr>
+                    <td>@artiste.Id</td>
+                    <td>@artiste.NomScenique</td>
+                    <td>@artiste.StyleMusical</td>
+                    <td>@artiste.DateSignature</td>
+                    <td>@artiste.Label?.Nom</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
