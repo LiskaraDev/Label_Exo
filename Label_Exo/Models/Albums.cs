@@ -1,4 +1,6 @@
-﻿namespace Label_Exo.Models
+﻿using Label_Exo.Models;
+
+namespace Label_Exo.Models
 {
     public class Album
     {
@@ -12,8 +14,9 @@
 
         public int ArtisteId { get; set; }
 
-        public Artiste Artiste { get; set; } = null!;
+        public Artiste? Artiste { get; set; }
 
         public ICollection<Piste> Pistes { get; set; } = new List<Piste>();
     }
 }
+

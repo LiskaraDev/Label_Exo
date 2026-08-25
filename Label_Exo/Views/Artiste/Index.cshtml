@@ -4,12 +4,12 @@
     ViewData["Title"] = "Artistes";
 }
 
-<h2 class="mb-4">Liste des artistes</h2>
+<h2 class="mb-4">Liste des artistes/groupes</h2>
 
 <p>
-    <a asp-action="Create" class="btn btn-primary">Ajouter une piste</a>
-    <a asp-action="Edit" class="btn btn-primary">Modifier une piste</a>
-    <a asp-action="Delete" class="btn btn-primary">Supprimer une piste</a>
+    <a asp-action="Create" class="btn btn-primary">Ajouter un artiste/groupe</a>
+    <a asp-action="Edit" class="btn btn-primary">Modifier un artiste/groupe</a>
+    <a asp-action="Delete" class="btn btn-primary">Supprimer un artiste/groupe</a>
 </p>
 
 @if (!Model.Any())
@@ -36,7 +36,7 @@ else
                     <td>@artiste.Id</td>
                     <td>@artiste.NomScenique</td>
                     <td>@artiste.StyleMusical</td>
-                    <td>@artiste.DateSignature</td>
+                    <td>@artiste.DateSignature?.Year</td>
                     <td>@artiste.Label?.Nom</td>
                 </tr>
             }

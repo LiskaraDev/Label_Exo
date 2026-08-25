@@ -12,7 +12,7 @@
 
         public int LabelId { get; set; }
 
-        public MusicLabel Label { get; set; } = null!;
+        public MusicLabel? Label { get; set; }
 
         public ICollection<Membre> Membres { get; set; } = new List<Membre>();
 

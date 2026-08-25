@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Label_Exo.Models;
@@ -44,8 +43,6 @@ public class PisteController : Controller
     }
 
     // POST: PISTES/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create([Bind("Id,Titre,DureeSecondes,AlbumId,Album")] Piste piste)
@@ -76,8 +73,6 @@ public class PisteController : Controller
     }
 
     // POST: PISTES/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int? id, [Bind("Id,Titre,DureeSecondes,AlbumId,Album")] Piste piste)

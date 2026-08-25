@@ -1,97 +1,162 @@
-
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Label_Exo.Models;
 using Label_Exo.Data;
+using System.Globalization;
 
-public class MembreController : Controller
+namespace Label_Exo.Controllers
 {
-    private readonly LabelExoDbContext _context;
-
-    public MembreController(LabelExoDbContext context)
+    public class MembreController : Controller
     {
-        _context = context;
-    }
+        private readonly LabelExoDbContext _context;
 
-    // GET: MEMBRES
-    public async Task<IActionResult> Index()    
-    {
-        return View(await _context.Membres.ToListAsync());
-    }
-
-    // GET: MEMBRES/Details/5
-    public async Task<IActionResult> Details(int? id)
-    {
-        if (id == null)
+        public MembreController(LabelExoDbContext context)
         {
-            return NotFound();
+            _context = context;
         }
 
-        var membre = await _context.Membres
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (membre == null)
+        // GET: Membre
+        public async Task<IActionResult> Index()
         {
-            return NotFound();
+            var membres = await _context.Membres
+                .Include(membre => membre.Artiste)
+                .ToListAsync();
+
+            return View(membres);
         }
 
-        return View(membre);
-    }
-
-    // GET: MEMBRES/Create
-    public IActionResult Create()
-    {
-        return View();
-    }
-
-    // POST: MEMBRES/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create([Bind("Id,Nom,Prenom,Instrument,DateNaissance,ArtisteId,Artiste")] Membre membre)
-    {
-        if (ModelState.IsValid)
+        // GET: Membre/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
-            _context.Add(membre);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var membre = await _context.Membres
+                .Include(membre => membre.Artiste)
+                .FirstOrDefaultAsync(membre => membre.Id == id);
+
+            if (membre == null)
+            {
+                return NotFound();
+            }
+
+            return View(membre);
+        }
+
+        // GET: Membre/Create
+        public async Task<IActionResult> Create()
+        {
+            await LoadArtistes();
+
+            return View();
+        }
+
+        // POST: Membre/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(
+            [Bind("Nom,Prenom,Instrument,ArtisteId")] Membre membre,
+            string? dateNaissance)
+        {
+            if (!string.IsNullOrWhiteSpace(dateNaissance))
+            {
+                if (DateTime.TryParseExact(
+                    dateNaissance,
+                    "dd/MM/yyyy",
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out DateTime date))
+                {
+                    membre.DateNaissance = date;
+                }
+                else
+                {
+                    ModelState.AddModelError(
+                        "dateNaissance",
+                        "La date doit être au format JJ/MM/AAAA."
+                    );
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                await LoadArtistes();
+
+                return View(membre);
+            }
+
+            _context.Membres.Add(membre);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
-        return View(membre);
-    }
 
-    // GET: MEMBRES/Edit/5
-    public async Task<IActionResult> Edit(int? id)
-    {
-        if (id == null)
+        // GET: Membre/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
-            return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var membre = await _context.Membres.FindAsync(id);
+
+            if (membre == null)
+            {
+                return NotFound();
+            }
+
+            await LoadArtistes();
+
+            return View(membre);
         }
 
-        var membre = await _context.Membres.FindAsync(id);
-        if (membre == null)
+        // POST: Membre/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(
+            int id,
+            [Bind("Id,Nom,Prenom,Instrument,ArtisteId")] Membre membre,
+            string? dateNaissance)
         {
-            return NotFound();
-        }
-        return View(membre);
-    }
+            if (id != membre.Id)
+            {
+                return NotFound();
+            }
 
-    // POST: MEMBRES/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    [HttpPost]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int? id, [Bind("Id,Nom,Prenom,Instrument,DateNaissance,ArtisteId,Artiste")] Membre membre)
-    {
-        if (id != membre.Id)
-        {
-            return NotFound();
-        }
+            if (!string.IsNullOrWhiteSpace(dateNaissance))
+            {
+                if (DateTime.TryParseExact(
+                    dateNaissance,
+                    "dd/MM/yyyy",
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out DateTime date))
+                {
+                    membre.DateNaissance = date;
+                }
+                else
+                {
+                    ModelState.AddModelError(
+                        "dateNaissance",
+                        "La date doit être au format JJ/MM/AAAA."
+                    );
+                }
+            }
 
-        if (ModelState.IsValid)
-        {
+            if (!ModelState.IsValid)
+            {
+                await LoadArtistes();
+
+                return View(membre);
+            }
+
             try
             {
-                _context.Update(membre);
+                _context.Membres.Update(membre);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
@@ -100,51 +165,64 @@ public class MembreController : Controller
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
+
             return RedirectToAction(nameof(Index));
         }
-        return View(membre);
-    }
 
-    // GET: MEMBRES/Delete/5
-    public async Task<IActionResult> Delete(int? id)
-    {
-        if (id == null)
+        // GET: Membre/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            return NotFound();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var membre = await _context.Membres
+                .Include(membre => membre.Artiste)
+                .FirstOrDefaultAsync(membre => membre.Id == id);
+
+            if (membre == null)
+            {
+                return NotFound();
+            }
+
+            return View(membre);
         }
 
-        var membre = await _context.Membres
-            .FirstOrDefaultAsync(m => m.Id == id);
-        if (membre == null)
+        // POST: Membre/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            return NotFound();
+            var membre = await _context.Membres.FindAsync(id);
+
+            if (membre != null)
+            {
+                _context.Membres.Remove(membre);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
-        return View(membre);
-    }
-
-    // POST: MEMBRES/Delete/5
-    [HttpPost, ActionName("Delete")]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> DeleteConfirmed(int? id)
-    {
-        var membre = await _context.Membres.FindAsync(id);
-        if (membre != null)
+        private bool MembreExists(int id)
         {
-            _context.Membres.Remove(membre);
+            return _context.Membres.Any(e => e.Id == id);
         }
 
-        await _context.SaveChangesAsync();
-        return RedirectToAction(nameof(Index));
-    }
-
-    private bool MembreExists(int? id)
-    {
-        return _context.Membres.Any(e => e.Id == id);
+        // Charge les artistes/groupes pour les listes déroulantes
+        private async Task LoadArtistes()
+        {
+            ViewBag.Artistes = new SelectList(
+                await _context.Artistes
+                    .OrderBy(a => a.NomScenique)
+                    .ToListAsync(),
+                "Id",
+                "NomScenique"
+            );
+        }
     }
 }

@@ -14,6 +14,6 @@
 
         public int ArtisteId { get; set; }
 
-        public Artiste Artiste { get; set; } = null!;
+        public Artiste? Artiste { get; set; }
     }
 }

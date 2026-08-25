@@ -1,54 +1,37 @@
 ﻿@model Label_Exo.Models.Artiste
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Ajouter un label";
 }
 
-<h1>Ajouter un groupe</h1>
+<h1>Ajouter un artiste</h1>
 
-<h4>Album</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<form asp-action="Create" method="post">
 
-            <div class="form-group">
-                <label asp-for="NomScenique" class="control-label"></label>
-                <input asp-for="NomScenique" class="form-control" />
-                <span asp-validation-for="NomScenique" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="StyleMusical" class="control-label"></label>
-                <input asp-for="StyleMusical" class="form-control" />
-                <span asp-validation-for="StyleMusical" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="DateSignature" class="control-label"></label>
-                <input asp-for="DateSignature" class="form-control" />
-                <span asp-validation-for="DateSignature" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="LabelId" class="control-label"></label>
-                <input asp-for="LabelId" class="form-control" />
-                <span asp-validation-for="LabelId" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Label" class="control-label"></label>
-                <input asp-for="Label" class="form-control" />
-                <span asp-validation-for="Label" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <div class="mb-3">
+        <label asp-for="NomScenique" class="form-label"></label>
+        <input asp-for="NomScenique" class="form-control" />
+        <span asp-validation-for="NomScenique" class="text-danger"></span>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Retour à la liste</a>
-</div>
+    <div class="mb-3">
+        <label asp-for="StyleMusical" class="form-label"></label>
+        <input asp-for="StyleMusical" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label class="control-label">Année de signature</label>
+        <input type="number" name="anneeSignature" class="form-control" min="1900" max="2100" />
+    </div>
+
+    <div class="mb-3">
+        <select asp-for="LabelId" asp-items="ViewBag.Labels" class="form-control">
+            <option value="">-- Choisir un label --</option>
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Créer</button>
+
+    <a asp-action="Index" class="btn btn-secondary">Retour à la liste</a>
+
+</form>
